@@ -5,6 +5,7 @@ import numpy as np
 import imutils
 import cv2 as cv
 
+print("\ndetect_mltiple.py launched\n")
 
 def detect_multiple(image) : # 이미지를 받아와서 밝은 부분에 0표시를 해주는 함수
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -41,3 +42,4 @@ def detect_multiple(image) : # 이미지를 받아와서 밝은 부분에 0표�
         cv.putText(image, "#{}".format(i+1), (x,y-15),cv.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,255),2)
     
     return image
+

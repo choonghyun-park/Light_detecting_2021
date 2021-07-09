@@ -7,3 +7,7 @@ def rescaleFrame(frame, scale=0.5):    # 프레임의 가로, 세로를 scale배
     dimensions = (width, height)
 
     return cv.resize(frame, dimensions, interpolation = cv.INTER_AREA)
+
+
+if __name__ ==  "__main__" :
+    pass

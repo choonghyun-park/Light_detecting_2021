@@ -13,13 +13,23 @@ def main() :
     # Reading videos
     capture = cv.VideoCapture(0)
 
+    # Read from path
+    # path = "C:/Users/user/Desktop/University/012. HEVEN/009. 기술아이디어/Videos"
+    # capture = cv.VideoCapture(path+"/tunnel2.mp4")
+
+
     while True:
         isTrue, frame = capture.read()
         
         try:
             detect_frame = detect.detect_multiple(frame)
 
+            # rescale_frame = cvTools.shape.rescaleFrame(detect_frame)
+            
+
             cv.imshow('Video', detect_frame)
+
+            # cv.imshow('Video', rescale_frame)
 
             if cv.waitKey(1) & 0xFF==ord('d'):
                 break

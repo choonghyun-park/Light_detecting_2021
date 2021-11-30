@@ -9,6 +9,9 @@ import time
 
 ser = serial.Serial('/dev/ttyUSB0',9600)
 print("\ndetect_mltiple.py launched\n")
+ser.write(b'a')
+print("\n============time sleep 1===========\n")
+time.sleep(1)
 
 def detect_multiple(image) : 
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -37,29 +40,25 @@ def detect_multiple(image) :
     cnts = contours.sort_contours(cnts)[0]
     
     lst = []
-    # time.sleep(1)
-    ser.write(b'a')
+    time.sleep(0.1)
+    print("\n============time sleep 0.1===========\n")
+    # ser.write(b'a')
     for (i, c) in enumerate(cnts):
         # Draw the bright spot on the image
         (x,y,w,h) = cv.boundingRect(c)
-        # if destination(x,y,w,h) not in lst:
-        #     lst.append(destination(x,y,w,h))
-        # # if i == len(cnts)-1:
-        # print("1111")
-        # ser.write(b'1234')
-        # # # ser.write(lst2bin(lst))
-        # # ser.write(lst2bin(lst))
-        # print("22222")
-        # print(lst)
+        spot = destination(x,y,w,h)
         
-        if (destination(x,y,w,h) is not None):
-            print("Detected Square : ", destination(x,y,w,h))
-            ser.write(int2bin(destination(x,y,w,h)))
+        if (spot is not None):
+            if spot not in lst:
+                lst.append(spot)
+            print("Detected Square : ", spot)
+            ser.write(int2bin(spot))
             
         ((cX, cY), radius) = cv.minEnclosingCircle(c)
         cv.circle(image, (int(cX), int(cY)), int(radius), (0,0,255), 3)
         cv.putText(image, "#{}".format(i+1), (x,y-15),cv.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,255),2)
-    
+    offSpot(lst)
+
     return image
 
 def destination(x,y,w,h):
@@ -96,25 +95,39 @@ def int2bin(i):
     else :
         return 
 
-def lst2bin(lst):
-    ret = 0b000000
-    if 1 in lst:
-        ret += 0b010000
-    if 2 in lst:
-        ret += 0b010000
-    if 3 in lst:
-        ret += 0b001000
-    if 4 in lst:
-        ret += 0b000100
-    if 5 in lst:
-        ret += 0b000010
-    if 6 in lst:
-        ret += 0b000001
-    
-    return ret
+def offSpot(lst):
+    if 1 not in lst:
+        ser.write(b'A')
+    if 2 not in lst:
+        ser.write(b'B')
+    if 3 not in lst:
+        ser.write(b'C')
+    if 4 not in lst:
+        ser.write(b'D')
+    if 5 not in lst:
+        ser.write(b'E')
+    if 6 not in lst:
+        ser.write(b'F')
 
-def write_read(x):
-    ser.write(bytes(x, 'utf-8'))
-    time.sleep(0.05)
-    data = ser.readline()
-    return data
+# def lst2bin(lst):
+#     ret = 0b000000
+#     if 1 in lst:
+#         ret += 0b010000
+#     if 2 in lst:
+#         ret += 0b010000
+#     if 3 in lst:
+#         ret += 0b001000
+#     if 4 in lst:
+#         ret += 0b000100
+#     if 5 in lst:
+#         ret += 0b000010
+#     if 6 in lst:
+#         ret += 0b000001
+    
+#     return ret
+
+# def write_read(x):
+#     ser.write(bytes(x, 'utf-8'))
+#     time.sleep(0.05)
+#     data = ser.readline()
+#     return data
